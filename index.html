@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="nl">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+  <title>🎉 Verjaardag voor Roshano</title>
+  <style>
+    :root{ --bg:#fff6fa; --primary:#e91e63; --primary-dark:#c2185b; --text:#2a2a2a; --card:#ffffff; }
+    *{box-sizing:border-box}
+    html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Ubuntu,'Helvetica Neue',Arial}
+    .wrap{min-height:100dvh;display:flex;flex-direction:column}
+    header{padding:20px 16px 8px;text-align:center}
+    header h1{margin:8px 0 0;font-size:clamp(28px,5vw,44px)}
+    header p{margin:6px 0 0;opacity:.85}
+    .hero{position:relative;margin:16px;padding:20px;border-radius:16px;background:linear-gradient(135deg,#ffe1ec,#ffd3e4);box-shadow:0 10px 30px rgba(233,30,99,.18);overflow:hidden}
+    .hero h2{margin:0 0 6px;font-size:clamp(22px,4.5vw,32px);color:#b2003b}
+    .hero .msg{font-size:clamp(16px,3.8vw,20px);line-height:1.5}
+    .cta{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;background:rgba(255,246,250,.96);backdrop-filter: blur(6px);z-index:9999}
+    .cta .card{background:var(--card);border:2px solid #ffd1e2;padding:24px;width:min(520px,90vw);border-radius:20px;text-align:center;box-shadow:0 10px 40px rgba(0,0,0,.08)}
+    .cta button{background:var(--primary);color:#fff;border:none;padding:14px 18px;border-radius:14px;font-size:18px;font-weight:700;box-shadow:0 6px 16px rgba(233,30,99,.35)}
+    .cta button:active{transform:translateY(1px);background:var(--primary-dark)}
+    .gallery{position:relative;margin:16px;border-radius:16px;overflow:hidden;height:70vh;max-height:620px;background:#fff;box-shadow:0 10px 30px rgba(233,30,99,.12)}
+    .gallery img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;animation:fade 30s infinite}
+    .gallery img:nth-child(1){animation-delay:0s}
+    .gallery img:nth-child(2){animation-delay:6s}
+    .gallery img:nth-child(3){animation-delay:12s}
+    .gallery img:nth-child(4){animation-delay:18s}
+    .gallery img:nth-child(5){animation-delay:24s}
+    @keyframes fade{0%{opacity:0}6%{opacity:1}20%{opacity:1}26%{opacity:0}100%{opacity:0}}
+    footer{padding:16px;text-align:center;font-size:14px;opacity:.8}
+    .hearts{pointer-events:none;position:fixed;inset:0;overflow:hidden;z-index:999}
+    .heart{position:absolute;color:var(--primary);animation:floatUp linear forwards;opacity:.9;filter:drop-shadow(0 2px 2px rgba(233,30,99,.25))}
+    @keyframes floatUp{0%{transform:translateY(0) scale(.6);opacity:.0}10%{opacity:1}90%{opacity:1}100%{transform:translateY(-110vh) scale(1.2);opacity:0}}
+    .badge{position:fixed;right:10px;bottom:10px;background:#fff;border:1px solid #ffd1e2;color:#b2003b;padding:6px 10px;border-radius:12px;font-size:12px;box-shadow:0 6px 16px rgba(0,0,0,.06)}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <h1>🎂 Gelukkige verjaardag, <span style="color:#e91e63">Roshano</span>!</h1>
+      <p>Gemaakt met 💻 door <strong>Roshnie</strong> ✨</p>
+    </header>
+
+    <section class="hero">
+      <h2>💖 Lieve Roshano,</h2>
+      <p class="msg">
+        Lieve Roshano, gefeliciteerd met je jaardag! Nog een jaartje knapper en leuker. Vandaag vieren we <strong>jou</strong> – met hartjes, foto’s en ons liedje. Ik hou van jou. 💖 — <strong>Roshnie</strong>
+      </p>
+    </section>
+
+    <section class="gallery" aria-label="Fotogalerij">
+      <img src="images/foto1.png" alt="Foto 1" />
+      <img src="images/foto2.png" alt="Foto 2" />
+      <img src="images/foto3.png" alt="Foto 3" />
+      <img src="images/foto4.png" alt="Foto 4" />
+      <img src="images/foto5.png" alt="Foto 5" />
+    </section>
+
+    <footer>
+      <p>Met heel veel liefde, <strong>Roshnie</strong> 💙</p>
+    </footer>
+  </div>
+
+  <div class="hearts" id="hearts"></div>
+  <div class="badge">Tik op de knop om muziek + animatie te starten 🎵</div>
+
+  <div class="cta" id="cta">
+    <div class="card">
+      <h3>Klaar om te openen? 💝</h3>
+      <p>Tik op de knop om de muziek en de hartjes te starten.</p>
+      <button id="startBtn">Tik om te starten</button>
+      <p style="margin-top:10px;font-size:12px;opacity:.7">*(Sommige telefoons blokkeren automatisch geluid tot je tikt.)*</p>
+    </div>
+  </div>
+
+  <audio id="music" src="song.wav" preload="auto"></audio>
+
+  <script>
+    const cta=document.getElementById('cta');
+    const startBtn=document.getElementById('startBtn');
+    const music=document.getElementById('music');
+    const heartsBox=document.getElementById('hearts');
+
+    function createHeart(){
+      const h=document.createElement('div');
+      h.className='heart';
+      h.textContent=['❤','💖','💘','💝','💗','💕','💓'][Math.floor(Math.random()*7)];
+      const size=Math.random()*24+18;
+      h.style.left=Math.random()*100+'vw';
+      h.style.bottom='-40px';
+      h.style.fontSize=size+'px';
+      h.style.animationDuration=(Math.random()*3+6)+'s';
+      heartsBox.appendChild(h);
+      setTimeout(()=>h.remove(),10000);
+    }
+
+    let heartInterval;
+    async function start(){
+      try{ await music.play(); }catch(e){}
+      cta.style.display='none';
+      heartInterval=setInterval(createHeart,200);
+      for(let i=0;i<25;i++) setTimeout(createHeart,i*60);
+    }
+    startBtn.addEventListener('click', start);
+  </script>
+</body>
+</html>
